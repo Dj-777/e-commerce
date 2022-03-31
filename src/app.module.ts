@@ -3,13 +3,12 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { User } from './user/entities/user.entity';
-import { UserModule } from './user/user.module';
-import { AuthModule } from './auth/auth.module';
-const entities = [User];
+import { Product } from './entity/product.entity';
+import { ProductModule } from './product/product.module';
+
+const entities = [Product];
 @Module({
   imports: [
-    UserModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),
@@ -24,7 +23,7 @@ const entities = [User];
       synchronize: true,
       logging: true,
     }),
-    AuthModule,
+    ProductModule,
   ],
   controllers: [AppController],
   providers: [AppService],
