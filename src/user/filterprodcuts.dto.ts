@@ -1,6 +1,6 @@
 import { IsEnum, IsIn, IsOptional } from '@nestjs/class-validator';
 
-import { Sort } from './components/filterenums.enums';
+import { Category, Sort } from './components/filterenums.enums';
 
 export class FilterProdcutsDto {
   @IsIn(Object.values(Sort))
@@ -8,8 +8,8 @@ export class FilterProdcutsDto {
   @IsEnum(Sort)
   public sort: Sort;
 
-  @IsIn(Object.values(Sort))
+  @IsIn(Object.values(Category))
   @IsOptional()
-  @IsEnum(Sort)
-  public sort: Sort;
+  @IsEnum(Category)
+  public Category: Category;
 }

@@ -9,9 +9,8 @@ export enum Sort {
 // }
 
 export enum Category {
-  Electronics = 'Electronics',
+  Electronicsgadegets = 'Electronics-gadegets',
   Sport = 'Sport',
-}
-export enum Brand {
-  Electronics = 'sansung' || 'vivo',
+  Jwellery = 'Jwellery',
+  clothes = 'clothes',
 }
