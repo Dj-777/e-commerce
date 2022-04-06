@@ -14,3 +14,8 @@ export enum Category {
   Jwellery = 'Jwellery',
   clothes = 'clothes',
 }
+
+export interface Electronicsgadegets {
+  kind: Category.Electronicsgadegets;
+  Vivo: 'VIVO';
+}

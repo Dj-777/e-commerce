@@ -23,8 +23,9 @@ export class UserService {
   async GetProdcutswithFilter(filterprodcutsdto: FilterProdcutsDto) {
     // console.log(filterprodcutsdto.)
     const HoldCate = { Category };
+    const cate = filterprodcutsdto.Category;
     console.log(HoldCate);
-    console.log(filterprodcutsdto.Category);
+    console.log(cate);
     console.log(filterprodcutsdto.sort);
     if (filterprodcutsdto.sort === Sort.HighToLow) {
       const Prodcuts = await getConnection()
