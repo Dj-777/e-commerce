@@ -30,7 +30,15 @@ export class UserService {
     const payload = `${user.id}`;
     const access_Token = this.jwtService.sign(payload);
     if (await LogInUsers.findOne({ where: { Email: authLoginDto.Email } })) {
-      return 'You Are Already Loged Into System Please Make Sure You Logout First Before Login Again';
+      const UpdateuserLoginAccessToken = await getConnection()
+        .createQueryBuilder()
+        .update(LogInUsers)
+        .set({
+          access_token: access_Token,
+        })
+        .where('Email=:Email', { Email: authLoginDto.Email })
+        .execute();
+      return 'You Are Already Loged Into System ';
     } else {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const saveusertologin = await getConnection()
@@ -58,19 +66,19 @@ export class UserService {
   }
   //LOGIN
 
-  //LOGOUT
-  async Logout(authlogin: AuthLoginDto) {
-    if (await LogInUsers.findOne({ where: { Email: authlogin.Email } })) {
-      const DeleteLoginUSer = await getConnection()
-        .createQueryBuilder()
-        .delete()
-        .from(LogInUsers, 'LoginUser')
-        .where('LoginUser.Email=:Email', { Email: authlogin.Email })
-        .execute();
-      return `${authlogin.Email} You Have Logout Successfully...`;
-    } else {
-      return `${authlogin.Email} You Have To Login First`;
-    }
-  }
-  //LOGOUT
+  // //LOGOUT
+  // async Logout(authlogin: AuthLoginDto) {
+  //   if (await LogInUsers.findOne({ where: { Email: authlogin.Email } })) {
+  //     const DeleteLoginUSer = await getConnection()
+  //       .createQueryBuilder()
+  //       .delete()
+  //       .from(LogInUsers, 'LoginUser')
+  //       .where('LoginUser.Email=:Email', { Email: authlogin.Email })
+  //       .execute();
+  //     return `${authlogin.Email} You Have Logout Successfully...`;
+  //   } else {
+  //     return `${authlogin.Email} You Have To Login First`;
+  //   }
+  // }
+  // //LOGOUT
 }
