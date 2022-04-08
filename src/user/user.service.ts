@@ -59,17 +59,17 @@ export class UserService {
   //LOGIN
 
   //LOGOUT
-  async Logout(Email) {
-    if (await LogInUsers.findOne({ where: { Email: Email } })) {
+  async Logout(authlogin: AuthLoginDto) {
+    if (await LogInUsers.findOne({ where: { Email: authlogin.Email } })) {
       const DeleteLoginUSer = await getConnection()
         .createQueryBuilder()
         .delete()
-        .from(LogInUsers)
-        .where('Email =:Email', { Email: Email })
+        .from(LogInUsers, 'LoginUser')
+        .where('LoginUser.Email=:Email', { Email: authlogin.Email })
         .execute();
-      return `${Email} You Have Logout Successfully...`;
+      return `${authlogin.Email} You Have Logout Successfully...`;
     } else {
-      return `${Email} You Have To Login First`;
+      return `${authlogin.Email} You Have To Login First`;
     }
   }
   //LOGOUT

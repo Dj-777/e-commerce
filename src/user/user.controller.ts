@@ -19,7 +19,7 @@ export class UserController {
 
   //LOGOUT
   @Delete('logout')
-  async Logout(@Body() Email: string) {
-    return await this.userservices.Logout(Email);
+  async Logout(@Body() authLoginDto: AuthLoginDto) {
+    return await this.userservices.Logout(authLoginDto);
   }
 }
