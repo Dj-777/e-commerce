@@ -34,7 +34,7 @@ export class UserService {
         .createQueryBuilder()
         .update(LogInUsers)
         .set({
-          updatedAt: Date,
+          access_token: access_Token,
         })
         .where('Email = :Email', { Email: authLoginDto.Email })
         .execute();
