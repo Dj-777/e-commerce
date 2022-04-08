@@ -30,7 +30,16 @@ export class UserService {
     const payload = `${user.id}`;
     const access_Token = this.jwtService.sign(payload);
     if (await LogInUsers.findOne({ where: { Email: authLoginDto.Email } })) {
-      return 'You Are Already Loged Into System Please Make Sure You Logout First Before Login Again';
+      const UpdateuserLoginAccessToken = await getConnection()
+        .createQueryBuilder()
+        .update(LogInUsers)
+        .set({
+          access_token: access_Token,
+        })
+        .where('Email = :Email', { Email: authLoginDto.Email })
+        .execute();
+      return `${access_Token}You Are Already Login Into System `;
+      // return 'You Are Already Loged Into System Please Make Sure You Logout First Before Login Again';
     } else {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const saveusertologin = await getConnection()
