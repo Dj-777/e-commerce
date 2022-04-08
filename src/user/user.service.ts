@@ -35,6 +35,7 @@ export class UserService {
         .update(LogInUsers)
         .set({
           access_token: access_Token,
+          updatedAt: Date,
         })
         .where('Email=:Email', { Email: authLoginDto.Email })
         .execute();
