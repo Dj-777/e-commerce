@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Patch, Post } from '@nestjs/common';
 import { AuthLoginDto } from 'src/components/authlogin.dto';
 import { RegisterUserDto } from 'src/components/userregister.dto';
 import { UserService } from './user.service';
@@ -12,7 +12,7 @@ export class UserController {
     return await this.userservices.RegisterUser(registeruserdto);
   }
   //LOGIN
-  @Post('login')
+  @Patch('login')
   async login(@Body() authLoginDto: AuthLoginDto) {
     return await this.userservices.login(authLoginDto);
   }
