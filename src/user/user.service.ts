@@ -57,4 +57,20 @@ export class UserService {
     return user;
   }
   //LOGIN
+
+  //LOGOUT
+  async Logout(Email) {
+    if (await LogInUsers.findOne({ where: { Email: Email } })) {
+      const DeleteLoginUSer = await getConnection()
+        .createQueryBuilder()
+        .delete()
+        .from(LogInUsers)
+        .where('Email =:Email', { Email: Email })
+        .execute();
+      return `${Email} You Have Logout Successfully...`;
+    } else {
+      return `${Email} You Have To Login First`;
+    }
+  }
+  //LOGOUT
 }
