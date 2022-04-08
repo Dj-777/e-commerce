@@ -34,10 +34,9 @@ export class UserService {
         .createQueryBuilder()
         .update(LogInUsers)
         .set({
-          access_token: access_Token,
           updatedAt: Date,
         })
-        .where('Email=:Email', { Email: authLoginDto.Email })
+        .where('Email = :Email', { Email: authLoginDto.Email })
         .execute();
       return `${access_Token}You Are Already Login Into System `;
     } else {

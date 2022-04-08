@@ -5,6 +5,5 @@ export class AuthLoginDto {
   Email: string;
 
   @IsNotEmpty()
-  @IsOptional()
   Password: string;
 }
