@@ -5,10 +5,11 @@ import { RegisterUserDto } from 'src/components/userregister.dto';
 import { LogInUsers } from 'src/entity/LoginUser.entity';
 import { User } from 'src/entity/user.entity';
 import { getConnection } from 'typeorm';
-
+import { MailerService } from '@nestjs-modules/mailer';
+import { async } from 'rxjs';
 @Injectable()
 export class UserService {
-  constructor(private readonly jwtService: JwtService) {}
+  constructor(private readonly jwtService: JwtService,private readonly mailerSevice:MailerService) {}
   //Register User
   async RegisterUser(registeruserdto: RegisterUserDto) {
     const checkemail = await User.findOne({
@@ -66,4 +67,29 @@ export class UserService {
     return user;
   }
   //LOGIN
+
+
+  //Forget-Password
+  async ForgetPassword(Email){
+    const checkemail = await User.findOne({where:{Email:Email.Email}});
+    if(checkemail){
+      const payload = `${checkemail.id}`;
+      const access_Token = this.jwtService.sign(payload);
+  
+      //const url=`http://localhost:3000/user/Forgetpassword?Token=${access_Token}`;
+
+      await this.mailerSevice.sendMail({
+        to:Email.Email,
+        subject:'Reset Password Link',
+        text:`http://localhost:3000/user/Forgetpassword?Token=${access_Token}`,
+      });
+      //return `You Are Here`;
+    }
+    else{
+      return `Message:You Need to Register First...`;
+    }
+  
+  }
+
+  //Forget-Password
 }

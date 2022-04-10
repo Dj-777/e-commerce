@@ -8,6 +8,7 @@ import { LogInUsers } from './entity/LoginUser.entity';
 import { Product } from './entity/testdb.entity';
 import { User } from './entity/user.entity';
 import { UserModule } from './user/user.module';
+import { MailModule } from './mail/mail.module';
 const entities = [Product, User, LogInUsers];
 @Module({
   imports: [
@@ -26,6 +27,7 @@ const entities = [Product, User, LogInUsers];
       logging: true,
     }),
     UserModule,
+    MailModule,
   ],
   controllers: [AppController],
   providers: [AppService],
