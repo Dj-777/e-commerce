@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Patch, Post, Request, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Patch,
+  Post,
+  Request,
+  UseGuards,
+} from '@nestjs/common';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { AuthLoginDto } from 'src/components/authlogin.dto';
 import { RegisterUserDto } from 'src/components/userregister.dto';
@@ -22,10 +30,9 @@ export class UserController {
   }
   //Login
 
-
   //Forget-Password
   @Post('Forgetpassword')
-  async ForgetPassword(@Body() Email){
+  async ForgetPassword(@Body() Email) {
     return await this.userservices.ForgetPassword(Email);
   }
   //Forget-Password
@@ -33,7 +40,7 @@ export class UserController {
   //Profile
   @UseGuards(JwtAuthGuard)
   @Get('profile')
-  async GetPRofile(@Request() req){
+  async GetPRofile(@Request() req) {
     return await req.user;
   }
 }

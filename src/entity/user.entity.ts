@@ -8,6 +8,8 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
+import { Gender } from 'src/components/userRegister.enum';
+
 @Entity()
 export class User extends BaseEntity {
   @PrimaryGeneratedColumn()
@@ -17,10 +19,28 @@ export class User extends BaseEntity {
   First_name: string;
 
   @Column()
+  Last_name: string;
+
+  @Column()
   Email: string;
 
   @Column()
   Password: string;
+
+  @Column()
+  Country: string;
+
+  @Column()
+  State: string;
+
+  @Column()
+  City: string;
+
+  @Column({ type: 'enum', enum: Gender })
+  Gender: Gender;
+
+  @Column({ default: null })
+  Access_Token: string;
 
   @Column()
   @CreateDateColumn()
