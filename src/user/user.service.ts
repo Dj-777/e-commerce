@@ -19,7 +19,14 @@ export class UserService {
     } else {
       const user = User.create(registeruserdto);
       await User.save(user);
-      return { Message: 'You have registered successfully' };
+      if (user.save) {
+        return { status: true, Message: 'You have registered successfully' };
+      } else {
+        return {
+          status: false,
+          Message: 'You have not registered successfully',
+        };
+      }
     }
   }
   //Register User
