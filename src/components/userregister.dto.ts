@@ -3,14 +3,14 @@ import { IsEnum, IsIn, Matches, MinLength } from 'class-validator';
 import { Gender } from './userRegister.enum';
 
 export class RegisterUserDto {
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'First_name is Not Empty' })
   First_name: string;
 
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'Last_name is Not Empty' })
   Last_name: string;
 
-  @IsEmail()
-  @IsNotEmpty()
+  @IsEmail({ message: 'Email is must Email' })
+  @IsNotEmpty({ message: 'Email is Not Empty' })
   Email: string;
 
   @IsNotEmpty()
@@ -20,13 +20,13 @@ export class RegisterUserDto {
   })
   Password: string;
 
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'Country is Not Empty' })
   Country: string;
 
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'State is Not Empty' })
   State: string;
 
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'City is Not Empty' })
   City: string;
 
   @IsIn(Object.values(Gender))
