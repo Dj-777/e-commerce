@@ -1,64 +1,65 @@
 /* eslint-disable prettier/prettier */
 import {
   Controller,
-  Post,
+  
   Get,
-  Put,
-  Delete,
-  Param,
-  Request,
-  Body,
-  UseGuards,
-  Query,
+  Req,
+  
+  
+  
 } from '@nestjs/common';
-import { JwtAuthGuard } from 'src/auth/guards/jwt.guard';
-import { UpdateResult, DeleteResult } from 'typeorm';
 import { ProductEntity } from './product.entity';
 import { ProductService } from './product.service';
+import {Request} from "express";
+import { PaginateQuery,Paginated, Paginate} from 'nestjs-paginate'
+
 
 @Controller('products')
 export class ProductController {
   constructor(private productsService: ProductService) {}
 
-  @UseGuards(JwtAuthGuard)
-  @Get()
-  async GetAll(): Promise<ProductEntity[]> {
-    return await this.productsService.getAll();
-  }
+  
+  // @Get()
+  // async GetAll(): Promise<ProductEntity[]> {
+  //   return await this.productsService.getAll();
+  // }
+  
+  @Get('backend')
+    async backend(@Req() req: Request) {
+        const builder = await this.productsService.queryBuilder('products');
 
-  @UseGuards(JwtAuthGuard)
-  @Post()
-  async Create(
-    @Request() req,
-    @Body() product: ProductEntity,
-  ): Promise<ProductEntity> {
-    return await this.productsService.create(product, req.user);
-  }
+        if (req.body.SearchByName) {
+            builder.where("products.Product_name LIKE :SearchByName OR products.Category LIKE :SearchByName", {SearchByName: `%${req.body.SearchByName}%`})
+        }
 
-  @UseGuards(JwtAuthGuard)
-  @Get(':id')
-  async GetOne(@Param() id: number): Promise<ProductEntity> {
-    return await this.productsService.getOne(id);
-  }
+      //   if (req.body.Category) {
+      //     builder.andWhere("products.Category LIKE :Category", {Category: `%${req.body.Category}%`})
+      // }
 
-  @UseGuards(JwtAuthGuard)
-  @Put(':id')
-  async Update(
-    @Param() id: number,
-    @Body() product: ProductEntity,
-    @Request() req,
-  ): Promise<UpdateResult> {
-    return await this.productsService.update(id, product, req.user);
-  }
+        const sort: any = req.body.sort;
 
-  @UseGuards(JwtAuthGuard)
-  @Delete(':id')
-  async Delete(@Param() id: number, @Request() req): Promise<DeleteResult> {
-    return await this.productsService.delete(id, req.user);
-  }
+        if (sort) {
+            builder.orderBy('products.price', sort.toUpperCase());
+        }
 
-  @Get('/find-by-productname')
-  async findAllByProductname(@Query('productname') productname: string) {
-    return this.productsService.findAllByProductname(productname);
+        const page: number = parseInt(req.body.page as any) || 1;
+        const perpage: number = parseInt(req.body.perpage as any) || 1;
+        const perPage = perpage;
+        const total = await builder.getCount();
+
+        builder.offset((page - 1) * perPage).limit(perPage);
+
+        return {
+            data: await builder.getMany(),
+        
+            total,
+            page,
+            //last_page: Math.ceil(total / perPage)
+        };
+    }
+
+    @Get()
+  public findAll(@Paginate() query: PaginateQuery): Promise<Paginated<ProductEntity>> {
+    return this.productsService.findAll(query)
   }
 }
