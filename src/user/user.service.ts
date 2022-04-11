@@ -15,7 +15,7 @@ export class UserService {
       where: { Email: registeruserdto.Email },
     });
     if (checkemail) {
-      return 'you are already registred with this email';
+      return { Message: 'you are already registred with this email' };
     } else {
       const user = User.create(registeruserdto);
       await User.save(user);
