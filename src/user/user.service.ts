@@ -19,7 +19,7 @@ export class UserService {
     } else {
       const user = User.create(registeruserdto);
       await User.save(user);
-      return user;
+      return { Message: 'You have registered successfully' };
     }
   }
   //Register User
