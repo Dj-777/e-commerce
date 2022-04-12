@@ -7,15 +7,17 @@ import { AppService } from './app.service';
 import { LogInUsers } from './entity/LoginUser.entity';
 import { Product } from './entity/testdb.entity';
 import { User } from './entity/user.entity';
+import { ProductEntity } from './product/product.entity';
+import { ProductModule } from './product/product.module';
 import { UserModule } from './user/user.module';
-const entities = [Product, User, LogInUsers];
+const entities = [ProductEntity, User, LogInUsers];
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
     }),
     TypeOrmModule.forRoot({
-      type: 'postgres',
+      type: 'mysql',
       host: process.env.DB_HOST,
       port: parseInt(process.env.DB_PORT),
       username: process.env.DB_USER,
@@ -26,6 +28,7 @@ const entities = [Product, User, LogInUsers];
       logging: true,
     }),
     UserModule,
+    ProductModule
   ],
   controllers: [AppController],
   providers: [AppService],
