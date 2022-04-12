@@ -24,4 +24,13 @@ async getAll(): Promise<ProductEntity[]> {
   return await this.productRepository.find()
 }
 
+async AddProdcuts(data) {
+
+  this.productRepository.create(data);
+
+  await this.productRepository.save(data);
+
+  return data;
+
+}
 }

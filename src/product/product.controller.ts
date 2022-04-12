@@ -1,8 +1,10 @@
 /* eslint-disable prettier/prettier */
 import {
+  Body,
   Controller,
   
   Get,
+  Post,
   Req,
   
   
@@ -11,6 +13,7 @@ import {
 import { ProductEntity } from './product.entity';
 import { ProductService } from './product.service';
 import {Request} from "express";
+import { AddProdcutsDto } from './Addproducts.dto';
 
 
 
@@ -62,5 +65,13 @@ export class ProductController {
     async GetAll(): Promise<ProductEntity[]> {
       return await this.productsService.getAll();
    
+    }
+
+    @Post('AddProdcuts')
+
+    async AddProdcuts(@Body() addproductdto: AddProdcutsDto) {
+  
+      await this.productsService.AddProdcuts(addproductdto);
+  
     }
 }
