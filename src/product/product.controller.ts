@@ -59,7 +59,8 @@ export class ProductController {
     }
 
     @Get()
-  public findAll(@Paginate() query: PaginateQuery): Promise<Paginated<ProductEntity>> {
-    return this.productsService.findAll(query)
-  }
+    async GetAll(): Promise<ProductEntity[]> {
+      return await this.productsService.getAll();
+   
+    }
 }

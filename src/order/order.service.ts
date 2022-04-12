@@ -3,7 +3,7 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable } from '@nestjs/common';
 import { OrderEntity } from './order.entity';
-import { UserEntity } from 'src/user/model/user.entity';
+import { User } from 'src/user/entity/user.entity';
 import { CartService } from 'src/cart/cart.service';
 
 @Injectable()
@@ -11,20 +11,20 @@ export class OrderService {
   constructor(
     @InjectRepository(OrderEntity)
     private orderRepository: Repository<OrderEntity>,
-    @InjectRepository(UserEntity)
-    private userRepository: Repository<UserEntity>,
+    @InjectRepository(User)
+    private userRepository: Repository<User>,
     private cartService: CartService,
   ) {}
 
   async order(user: string): Promise<any> {
         //find user existing orders
         const usersOrder = await this.orderRepository.find({ relations: ['user'] });
-        const userOrder = usersOrder.filter(order => order.user?.username === user && order.pending === false);
+        const userOrder = usersOrder.filter(order => order.user?.Email === user && order.pending === false);
         //find user's cart items
         const cartItems = await this.cartService.getItemsInCard(user)
         const subTotal = cartItems.map(item => item.total).reduce((acc, next) => acc + next);
         //get the authenticated user
-        const authUser = await this.userRepository.findOne({ username: user })
+        const authUser = await this.userRepository.findOneBy({ Email: user })
         //if users has an pending order - add item to the list of order
         const cart = await cartItems.map(item => item.item);
  
@@ -43,7 +43,7 @@ export class OrderService {
 
 async getOrders(user: string): Promise<OrderEntity[]> {
         const orders = await this.orderRepository.find({ relations: ['user'] });
-        return orders.filter(order => order.user?.username === user)
+        return orders.filter(order => order.user?.Email === user)
     }
  }
 

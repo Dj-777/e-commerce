@@ -12,22 +12,16 @@ export class ProductService {
     private productRepository: Repository<ProductEntity>,
   ) {}
 
-  // async getAll(): Promise<ProductEntity[]> {
-  //   return await this.productRepository.find();
-  // }
+  async getOne(id: number): Promise<ProductEntity> {
+    return this.productRepository.findOne({where: {id: id}});
+}
 
   async queryBuilder(alias: string) {
     return this.productRepository.createQueryBuilder(alias);
 }
 
-public findAll(query: PaginateQuery): Promise<Paginated<ProductEntity>> {
-  return paginate(query, this.productRepository, {
-    sortableColumns: ['id', 'Product_name', 'Desctiption', 'Price', 'Category', 'image',],
-    searchableColumns: ['Product_name'],
-    defaultSortBy: [['Price', 'DESC']],
-    filterableColumns: {
-      Category: [FilterOperator.GTE, FilterOperator.LTE],
-    },
-  })
+async getAll(): Promise<ProductEntity[]> {
+  return await this.productRepository.find()
 }
+
 }

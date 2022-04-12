@@ -4,11 +4,17 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { CartModule } from './cart/cart.module';
+import { OrderModule } from './order/order.module';
 import { ProductModule } from './product/product.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
   ProductModule,
+  UserModule,
+  CartModule,
+  OrderModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),

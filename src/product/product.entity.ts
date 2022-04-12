@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable prettier/prettier */
+import { CartEntity } from 'src/cart/cart.entity';
 import {
   BaseEntity,
   Column,
@@ -40,5 +41,7 @@ export class ProductEntity extends BaseEntity {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  
+  @OneToMany(type => CartEntity, cart => cart.id)
+  @JoinColumn()
+  cart: CartEntity[]
 }

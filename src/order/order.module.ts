@@ -7,12 +7,12 @@ import { Module } from '@nestjs/common';
 import { OrderService } from './order.service';
 import { CartService } from 'src/cart/cart.service';
 import { ProductService } from 'src/product/product.service';
-import { UserEntity } from 'src/user/model/user.entity';
 import { OrderController } from './order.controller';
+import { User } from 'src/user/entity/user.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([OrderEntity, ProductEntity, CartEntity, UserEntity]),
+    TypeOrmModule.forFeature([OrderEntity, ProductEntity, CartEntity, User]),
   ],
   controllers: [OrderController],
   providers: [OrderService, CartService, ProductService],
