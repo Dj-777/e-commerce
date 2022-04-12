@@ -32,7 +32,7 @@ export class ProductController {
         const builder = await this.productsService.queryBuilder('products');
 
         if (req.body.SearchByName) {
-            builder.where("products.Product_name LIKE :SearchByName OR products.Category LIKE :SearchByName", {SearchByName: `%${req.body.SearchByName}%`})
+            builder.where("product_entity.Product_name LIKE :SearchByName OR product_entity.Category LIKE :SearchByName", {SearchByName: `%${req.body.SearchByName}%`})
         }
 
       //   if (req.body.Category) {
@@ -42,7 +42,7 @@ export class ProductController {
         const sort: any = req.body.sort;
 
         if (sort) {
-            builder.orderBy('products.Price', sort.toUpperCase());
+            builder.orderBy('product_entity.Price', sort.toUpperCase());
         }
 
         const page: number = parseInt(req.body.page as any) || 1;
