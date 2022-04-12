@@ -45,10 +45,11 @@ export class UserService {
         })
         .where('Email = :Email', { Email: authLoginDto.Email })
         .execute();
-      return {`
-      Email_verify:true,
-      Accesstoken= ${access_Token} 
-      Email=${authLoginDto.Email}`};
+      return{
+        Email_verify: true,
+        access_Token: access_Token,
+        Email: authLoginDto.Email,
+      };
     } else {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const saveusertologin = await getConnection()
@@ -60,10 +61,10 @@ export class UserService {
           access_token: access_Token,
         })
         .execute();
-      return {
-          Email_verify:true,
-        Email: `${authLoginDto.Email} `,
-        access_token: access_Token,
+      return{
+        Email_verify: true,
+        access_Token: access_Token,
+        Email: authLoginDto.Email,
       };
     }
   }
