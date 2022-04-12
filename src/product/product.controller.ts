@@ -27,7 +27,7 @@ export class ProductController {
   //   return await this.productsService.getAll();
   // }
   
-  @Get('backend')
+  @Get('filterproduct')
     async backend(@Req() req: Request) {
         const builder = await this.productsService.queryBuilder('products');
 
@@ -42,7 +42,7 @@ export class ProductController {
         const sort: any = req.body.sort;
 
         if (sort) {
-            builder.orderBy('products.price', sort.toUpperCase());
+            builder.orderBy('products.Price', sort.toUpperCase());
         }
 
         const page: number = parseInt(req.body.page as any) || 1;
@@ -61,13 +61,13 @@ export class ProductController {
         };
     }
 
-    @Get()
+    @Get('getallproducts')
     async GetAll(): Promise<ProductEntity[]> {
       return await this.productsService.getAll();
    
     }
 
-    @Post()
+    @Post('createproducts')
     async Create( @Body() product: ProductEntity): Promise<ProductEntity> {
       return await this.productsService.create(product);
     }
