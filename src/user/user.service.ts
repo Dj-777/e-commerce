@@ -47,7 +47,8 @@ export class UserService {
         .execute();
       return `You Are Already Login Into System
       Email_verify:true,
-      Accesstoken= ${access_Token} and ${authLoginDto.Email}`;
+      Accesstoken= ${access_Token} 
+      Email=${authLoginDto.Email}`;
     } else {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const saveusertologin = await getConnection()
@@ -61,7 +62,7 @@ export class UserService {
         .execute();
       return {
           Email_verify:true,
-        Yourdata: `${authLoginDto.Email} `,
+        Email: `${authLoginDto.Email} `,
         access_token: access_Token,
       };
     }
