@@ -29,7 +29,7 @@ export class ProductController {
   
   @Get('filterproduct')
     async backend(@Req() req: Request) {
-        const builder = await this.productsService.queryBuilder('products');
+        const builder = await this.productsService.queryBuilder('product_entity');
 
         if (req.body.SearchByName) {
             builder.where("product_entity.Product_name LIKE :SearchByName OR product_entity.Category LIKE :SearchByName", {SearchByName: `%${req.body.SearchByName}%`})
