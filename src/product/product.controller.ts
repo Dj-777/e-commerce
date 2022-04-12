@@ -67,11 +67,8 @@ export class ProductController {
    
     }
 
-    @Post('AddProdcuts')
-
-    async AddProdcuts(@Body() addproductdto: AddProdcutsDto) {
-  
-      await this.productsService.AddProdcuts(addproductdto);
-  
+    @Post()
+    async Create( @Body() product: ProductEntity): Promise<ProductEntity> {
+      return await this.productsService.create(product);
     }
 }

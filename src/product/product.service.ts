@@ -1,8 +1,9 @@
 /* eslint-disable prettier/prettier */
-import { Injectable,  } from '@nestjs/common';
+import { Injectable, UnauthorizedException,  } from '@nestjs/common';
 import { Repository} from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ProductEntity } from './product.entity';
+import { AddProdcutsDto } from './Addproducts.dto';
 
 
 @Injectable()
@@ -24,13 +25,10 @@ async getAll(): Promise<ProductEntity[]> {
   return await this.productRepository.find()
 }
 
-async AddProdcuts(data) {
+async create(product: ProductEntity): Promise<ProductEntity> {
+  
+      return await this.productRepository.save(product);
 
-  this.productRepository.create(data);
-
-  await this.productRepository.save(data);
-
-  return data;
-
+  
 }
 }
