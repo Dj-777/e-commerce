@@ -89,15 +89,25 @@ export class UserService {
       );
       //const url=`http://localhost:3000/user/Forgetpassword?Token=${access_Token}`;
 
-      await this.mailerSevice.sendMail({
+      const sendMails = await this.mailerSevice.sendMail({
         to: Email.Email,
         subject: 'Reset Password Link',
-        text: `https://e-commerce-creole.herokuapp.com/user/ResetPassword?Token=${access_Token}`,
+        text: `Click here for reset password-https://e-commerce-creole.herokuapp.com/user/ResetPassword?Token=${access_Token}`,
       });
 
+      if (sendMails) {
+        return {
+          status: true,
+          Message: 'Email has been sent, please check your inbox.',
+        };
+      } else {
+        return {
+          Message: 'Something went wrong ',
+        };
+      }
       //return `You Are Here`;
     } else {
-      return `Message:You Need to Register First...`;
+      return { Message: 'You Need to Register First...' };
     }
   }
   //forgetPassword
