@@ -11,12 +11,8 @@ import { JwtStrategy } from 'src/auth/jwt.strategy';
 @Module({
   imports: [
     PassportModule,
-    JwtModule.registerAsync({
-      imports: [ConfigModule],
-      useFactory: async () => ({
-        secret: process.env.JWT_SECRET,
-      }),
-      inject: [ConfigService],
+    JwtModule.register({
+      secret: 'Secret',
     }),
     TypeOrmModule.forFeature([User]),
   ],

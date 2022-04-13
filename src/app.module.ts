@@ -10,6 +10,7 @@ import { User } from './entity/user.entity';
 import { ProductEntity } from './product/product.entity';
 import { ProductModule } from './product/product.module';
 import { UserModule } from './user/user.module';
+import { MailModule } from './mail/mail.module';
 const entities = [ProductEntity, User, LogInUsers];
 @Module({
   imports: [
@@ -25,10 +26,11 @@ const entities = [ProductEntity, User, LogInUsers];
       database: process.env.DB_NAME,
       entities: entities,
       synchronize: true,
-      logging: true,
+      // logging: true,
     }),
     UserModule,
-    ProductModule
+    ProductModule,
+    MailModule,
   ],
   controllers: [AppController],
   providers: [AppService],
