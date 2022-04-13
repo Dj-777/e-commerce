@@ -32,7 +32,7 @@ export class ProductController {
         const builder = await this.productsService.queryBuilder('ProductEntity');
 
         if (req.body.SearchByName) {
-            builder.where("ProductEntity.Product_name LIKE :SearchByName OR ProductEntity.Category LIKE :SearchByName", {SearchByName: `%${req.body.SearchByName}%`})
+            builder.where("ProductEntity.Product_name ILIKE :SearchByName OR ProductEntity.Category ILIKE :SearchByName", {SearchByName: `%${req.body.SearchByName}%`})
         }
 
       //   if (req.body.Category) {
