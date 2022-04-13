@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import { Injectable, UnauthorizedException,  } from '@nestjs/common';
-import { Repository} from 'typeorm';
+import { Repository, SelectQueryBuilder} from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ProductEntity } from './product.entity';
 import { AddProdcutsDto } from './Addproducts.dto';
@@ -17,7 +17,7 @@ export class ProductService {
     return this.productRepository.findOne({where: {id: id}});
 }
 
-  async queryBuilder(alias: string) {
+  async queryBuilder(alias: string): Promise<SelectQueryBuilder<ProductEntity>> {
     return this.productRepository.createQueryBuilder(alias);
 }
 
