@@ -29,10 +29,10 @@ export class ProductController {
   
   @Get('filterproduct')
     async backend(@Req() req: Request) {
-        const builder = await this.productsService.queryBuilder('product_entity');
+        const builder = await this.productsService.queryBuilder('ProductEntity');
 
         if (req.body.SearchByName) {
-            builder.where("product_entity.Product_name LIKE :SearchByName OR product_entity.Category LIKE :SearchByName", {SearchByName: `%${req.body.SearchByName}%`})
+            builder.where("ProductEntity.Product_name LIKE :SearchByName OR ProductEntity.Category LIKE :SearchByName", {SearchByName: `%${req.body.SearchByName}%`})
         }
 
       //   if (req.body.Category) {
@@ -42,7 +42,7 @@ export class ProductController {
         const sort: any = req.body.sort;
 
         if (sort) {
-            builder.orderBy('product_entity.Price', sort.toUpperCase());
+            builder.orderBy('ProductEntity.Price', sort.toUpperCase());
         }
 
         const page: number = parseInt(req.body.page as any) || 1;

@@ -26,9 +26,9 @@ async getAll(): Promise<ProductEntity[]> {
 }
 
 async create(product: ProductEntity): Promise<ProductEntity> {
-  
+ 
       return await this.productRepository.save(product);
 
+  }
   
-}
 }
