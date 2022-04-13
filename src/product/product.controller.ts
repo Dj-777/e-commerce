@@ -27,7 +27,7 @@ export class ProductController {
   //   return await this.productsService.getAll();
   // }
   
-  @Get('filterproduct')
+  @Post('filterproduct')
     async backend(@Req() req: Request) {
         const builder = await this.productsService.queryBuilder('ProductEntity');
 
