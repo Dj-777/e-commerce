@@ -17,7 +17,7 @@ export class ProductService {
     return this.productRepository.findOne({where: {id: id}});
 }
 
-  async queryBuilder(alias: string){
+  async queryBuilder(alias: string): Promise<SelectQueryBuilder<ProductEntity>> {
     return this.productRepository.createQueryBuilder(alias);
 }
 
