@@ -46,7 +46,7 @@ export class ProductController {
         }
 
         const page: number = parseInt(req.body.page as any) || 1;
-        const perpage: number = parseInt(req.body.perpage as any) || 1;
+        const perpage: number = parseInt(req.body.perpage as any) || 8;
         const perPage = perpage;
         const total = await builder.getCount();
 
