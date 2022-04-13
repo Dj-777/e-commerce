@@ -45,8 +45,10 @@ export class UserService {
     const user: User = await this.validateUser(authLoginDto);
     const payload = `${user.id}`;
     const access_Token = this.jwtService.sign(payload);
-
-    if (await User.findOne({ where: { Email: authLoginDto.Email } })) {
+    const checkemail = await User.findOne({
+      where: { Email: authLoginDto.Email },
+    });
+    if (checkemail) {
       user.Access_Token = access_Token;
       await user.save();
       return {
