@@ -42,13 +42,11 @@ export class UserService {
 
   //LOGIN
   async login(authLoginDto: AuthLoginDto) {
-    const user: User = await this.validateUser(authLoginDto);
-    const payload = `${user.id}`;
-    const access_Token = this.jwtService.sign(payload);
-    const checkemail = await User.findOne({
-      where: { Email: authLoginDto.Email },
-    });
-    if (checkemail) {
+    if (await User.findOne({ where: { Email: authLoginDto.Email } })) {
+      const user: User = await this.validateUser(authLoginDto);
+      const payload = `${user.id}`;
+      const access_Token = this.jwtService.sign(payload);
+
       user.Access_Token = access_Token;
       await user.save();
       return {
