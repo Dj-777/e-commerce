@@ -20,7 +20,11 @@ export class CartService {
         const cartItems = await this.cartRepository.find({ relations: ["item",'user'] });
         const product = await this.productsService.getOne(productId);
 
-        const authUserToken = await this.userRepository.findOne({Access_Token : user});
+        const authUser = await this.userRepository.findOne({Email : user})
+      
+        const authUserToken = await this.userRepository.findOne({where:{Access_Token:authUser.Access_Token}});
+         console.log(authUserToken);
+        //const authUserToken = await this.userRepository.findOne({Access_Token : user});
          if(!authUserToken === null){
         const authUser = await this.userRepository.findOne({Email : user})
        
