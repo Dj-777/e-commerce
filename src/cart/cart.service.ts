@@ -25,8 +25,11 @@ export class CartService {
         const authUserToken = await this.userRepository.findOne({where:{Access_Token:authUser.Access_Token}});
          console.log(authUserToken);
         //const authUserToken = await this.userRepository.findOne({Access_Token : user});
-         if(!authUserToken === null){
-        const authUser = await this.userRepository.findOne({Email : user})
+         if(authUser){
+         const authUser = await this.userRepository.findOne({Email : user})
+        const authUserToken = await this.userRepository.findOne({where:{Access_Token:authUser.Access_Token}});
+        console.log(authUserToken);
+        
        
         //Confirm the product exists.
         if (product) {
