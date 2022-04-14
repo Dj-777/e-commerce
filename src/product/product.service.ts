@@ -12,7 +12,7 @@ export class ProductService {
     private productRepository: Repository<ProductEntity>,
   ) {}
 
-  async getOne(id: number): Promise<ProductEntity> {
+  async getOne(id: number) {
     return this.productRepository.findOne({where: {id: id}});
 }
 
@@ -23,5 +23,10 @@ export class ProductService {
 async getAll(): Promise<ProductEntity[]> {
   return await this.productRepository.find()
 }
+
+async getproductbyId(id: string) {
+  return this.productRepository.createQueryBuilder(id);
+}
+
 
 }

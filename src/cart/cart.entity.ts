@@ -27,7 +27,7 @@ export class CartEntity {
   @JoinColumn()
   item: ProductEntity;
 
-  @ManyToOne((type) => User, (user) => user.First_name)
+  @ManyToOne((type) => User, (user) => user.Email)
   @JoinColumn()
   user: User;
 

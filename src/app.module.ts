@@ -2,6 +2,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AddressModule } from './address/address.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { CartModule } from './cart/cart.module';
@@ -15,6 +16,7 @@ import { UserModule } from './user/user.module';
   UserModule,
   CartModule,
   OrderModule,
+  AddressModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),

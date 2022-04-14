@@ -1,8 +1,10 @@
 /* eslint-disable prettier/prettier */
 import {
+  Body,
   Controller,
   
   Get,
+  Post,
   Req,
   
   
@@ -19,9 +21,21 @@ export class ProductController {
   constructor(private productsService: ProductService) {}
 
   
-  // @Get()
-  // async GetAll(): Promise<ProductEntity[]> {
-  //   return await this.productsService.getAll();
+  @Post('getProductById')
+  async Getone(@Req() req: Request) {
+    const builder = await this.productsService.getproductbyId('ProductEntity');
+
+    if (req.body.id) {
+      return await this.productsService.getOne(req.body.id);
+    }
+    
+
+  }
+
+  // @Get(':id')
+  // async GetOne(@Body() id: number): Promise<ProductEntity> {
+  //   return await this.productsService.getOne(id);
+ 
   // }
   
   @Get('backend')

@@ -20,13 +20,13 @@ export class OrderEntity {
   @OneToMany((type) => ProductEntity, (item) => item.id)
   items: ProductEntity[];
 
-  @OneToOne((type) => User, (user) => user.First_name)
+  @OneToOne((type) => User, (user) => user.Email)
   @JoinColumn()
   user: User;
 
   @Column()
   subTotal: number;
 
-  @Column({ default: false })
-  pending: boolean;
+  // @Column({ default: false })
+  // pending: boolean;
 }

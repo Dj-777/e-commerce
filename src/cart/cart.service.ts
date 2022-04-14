@@ -32,7 +32,7 @@ export class CartService {
                 const newItem = this.cartRepository.create({ total: product.Price * quantity, quantity });
                 newItem.user = authUser;
                 newItem.item = product;
-                this.cartRepository.save(newItem)
+                //this.cartRepository.save(newItem)
  
                 return await this.cartRepository.save(newItem)
             } else {
@@ -46,9 +46,18 @@ export class CartService {
         return null;
     }
 
-    async getItemsInCard(user: string): Promise<CartEntity[]> {
-        const userCart = await this.cartRepository.find({ relations: ["item",'user'] });
-        return (await userCart).filter(item => item.user.Email === user)
-    }
+    async getItemsInCart(user: string): Promise<CartEntity[]> {
+        const authUser = await this.userRepository.findOneBy({Email : user})
+        console.log(authUser);
+        if(authUser){
+            const userCart = await this.cartRepository.find({ relations: ["item",'user'] });
+            //console.log(userCart)
+       
+           const cart = await userCart.filter((item) =>  item.user?.Email === user)
+            return cart;
+            
+        }
+       
+    } 
 }
 

@@ -21,18 +21,19 @@ export class CartController {
   //@UseGuards(JwtAuthGuard)
   @Post()
   async AddToCart(@Body() body, @Request() req): Promise<void> {
-    const { productId, quantity } = body;
+    const { productId, quantity , Email} = body;
     return await this.cartService.addToCart(
       productId,
       quantity,
-      req.user.username,
+     Email,
     );
   }
 
   //@UseGuards(JwtAuthGuard)
-  @Get()
-  async getItemsInCart(@Request() req): Promise<CartEntity[]> {
-    return await this.cartService.getItemsInCard(req.user.username);
+  @Post('getcart')
+  async getItemsInCart(@Body() body,@Request() req): Promise<CartEntity[]> {
+    const { Email } = body;
+    return await this.cartService.getItemsInCart(Email);
   }
 }
 

@@ -19,9 +19,9 @@ export class OrderService {
   async order(user: string): Promise<any> {
         //find user existing orders
         const usersOrder = await this.orderRepository.find({ relations: ['user'] });
-        const userOrder = usersOrder.filter(order => order.user?.Email === user && order.pending === false);
+        const userOrder = usersOrder.filter(order => order.user?.Email === user);
         //find user's cart items
-        const cartItems = await this.cartService.getItemsInCard(user)
+        const cartItems = await this.cartService.getItemsInCart(user)
         const subTotal = cartItems.map(item => item.total).reduce((acc, next) => acc + next);
         //get the authenticated user
         const authUser = await this.userRepository.findOneBy({ Email: user })
@@ -39,11 +39,17 @@ export class OrderService {
             await this.orderRepository.update(existingOrder[0].id, { subTotal: existingOrder[0].subTotal + cart[0].Price });
             return { message: "order modified" }
         }
+     
 }
 
 async getOrders(user: string): Promise<OrderEntity[]> {
+  const authUser = await this.userRepository.findOneBy({Email : user})
+  console.log(authUser);
+  if(authUser){
         const orders = await this.orderRepository.find({ relations: ['user'] });
-        return orders.filter(order => order.user?.Email === user)
+       const order = orders.filter(order => order.user?.Email === user);
+       return order;
     }
  }
+}
 
