@@ -23,16 +23,16 @@ export class UserService {
       where: { Email: registeruserdto.Email },
     });
     if (checkemail) {
-      return { Message: 'you are already registred with this email' };
+      return { message: 'you are already registred with this email' };
     } else {
       const user = User.create(registeruserdto);
       await User.save(user);
       if (user.save) {
-        return { status: true, Message: 'You have registered successfully' };
+        return { status: true, message: 'You have registered successfully' };
       } else {
         return {
           status: false,
-          Message: 'You have not registered successfully',
+          message: 'You have not registered successfully',
         };
       }
     }
@@ -62,7 +62,7 @@ export class UserService {
       //   .where('Email = :Email', { Email: authLoginDto.Email })
       //   .execute();
     } else {
-      return { Message: 'You have to register first' };
+      return { message: 'Email is not registred, do you want to registred?' };
     }
   }
   async validateUser(authLoginDto: AuthLoginDto): Promise<User> {
@@ -97,16 +97,16 @@ export class UserService {
       if (sendMails) {
         return {
           status: true,
-          Message: 'Email has been sent, please check your inbox.',
+          message: 'Email has been sent, please check your inbox.',
         };
       } else {
         return {
-          Message: 'Something went wrong ',
+          message: 'Something went wrong ',
         };
       }
       //return `You Are Here`;
     } else {
-      return { Message: 'You Need to Register First...' };
+      return { message: 'You Need to Register First...' };
     }
   }
   //forgetPassword
@@ -139,22 +139,22 @@ export class UserService {
               const successchange = await getdatafromaccesstoken.save();
               delete forgetpasswordto.access_token;
               if (successchange) {
-                return { Message: 'Password is succuessfully change' };
+                return { message: 'Password is succuessfully change' };
               } else {
-                return { Message: 'Something went wrong ' };
+                return { message: 'Something went wrong ' };
               }
             } else {
-              return { Message: 'You dont use previous password' };
+              return { message: 'You dont use previous password' };
             }
           } else {
-            return { Message: 'Your data is not get' };
+            return { message: 'Your data is not get' };
           }
         } else {
-          return { Message: 'You have to enter correct accesstoken' };
+          return { message: 'You have to enter correct accesstoken' };
         }
       }
     } else {
-      return { Message: 'Password and conform passsword are not same' };
+      return { message: 'Password and conform passsword are not same' };
     }
   }
 
