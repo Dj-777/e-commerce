@@ -12,24 +12,24 @@ import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
-  ProductModule,
-  UserModule,
-  CartModule,
-  OrderModule,
-  AddressModule,
+    ProductModule,
+    UserModule,
+    CartModule,
+    OrderModule,
+    AddressModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),
     TypeOrmModule.forRoot({
-      type: process.env.DB_TYPE as any,
+      type: 'postgres',
       host: process.env.DB_HOST,
       port: parseInt(process.env.DB_PORT),
-      username: process.env.DB_USERNAME,
+      username: process.env.DB_USER,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
       autoLoadEntities: true,
       synchronize: true,
-      logging: true,
+      //logging: true,
     }),
   ],
   controllers: [AppController],

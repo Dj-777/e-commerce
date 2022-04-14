@@ -55,7 +55,7 @@ export class User extends BaseEntity {
    @JoinColumn()
    order : OrderEntity;
 
-   @OneToOne(type => AddressEntity,  address =>  address.id)
+   @OneToMany(type => AddressEntity,  address =>  address.id)
    @JoinColumn()
    address : AddressEntity;
 

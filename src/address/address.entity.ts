@@ -1,54 +1,54 @@
 import {
-    BaseEntity,
-    BeforeInsert,
-    Column,
-    CreateDateColumn,
-    Entity,
-    JoinColumn,
-    OneToMany,
-    OneToOne,
-    PrimaryGeneratedColumn,
-    UpdateDateColumn,
+  BaseEntity,
+  BeforeInsert,
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinColumn,
+  ManyToMany,
+  ManyToOne,
+  OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 import { User } from 'src/user/entity/user.entity';
 @Entity()
 export class AddressEntity extends BaseEntity {
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column()
-    add1: string;
+  @Column()
+  fullname: string;
+ 
+  @Column()
+  phonenumber: string;
 
+  @Column()
+  pincode: number;
 
-    @Column()
-    add2: string;
+  @Column()
+  state: string;
 
-    @Column()
-    street: string;
+  @Column()
+  city: string;
 
+  @Column()
+  housenumber: string;
 
-    @Column()
-    pincode: number;
+  @Column()
+  roadname_area: string;
 
-    @Column()
-    state: string;
+  @ManyToOne((type) => User, (user) => user.id)
+  @JoinColumn()
+  user: User;
 
-    @Column()
-    city: string;
+  @Column()
+  @CreateDateColumn()
+  createdAt: Date;
 
-
-    @OneToOne((type) => User, (user) => user.Email)
-    @JoinColumn()
-    user: User;
-
-    @Column()
-    @CreateDateColumn()
-    createdAt: Date;
-
-    @Column()
-    @UpdateDateColumn()
-    updatedAt: Date;
-
-
+  @Column()
+  @UpdateDateColumn()
+  updatedAt: Date;
 }
