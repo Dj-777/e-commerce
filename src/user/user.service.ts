@@ -8,7 +8,6 @@ import { JwtService } from '@nestjs/jwt';
 import { AuthLoginDto } from 'src/components/authlogin.dto';
 import { forgetPasswordDto } from 'src/components/Forgetpasswor.dto';
 import { RegisterUserDto } from 'src/components/userregister.dto';
-import { LogInUsers } from 'src/entity/LoginUser.entity';
 import { User } from 'src/entity/user.entity';
 import { getConnection } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
@@ -64,7 +63,7 @@ export class UserService {
       //   .where('Email = :Email', { Email: authLoginDto.Email })
       //   .execute();
     } else {
-      return { message: 'You have to register first' };
+      return { message: 'Email is not registred, do you want to registred?' };
     }
   }
   async validateUser(authLoginDto: AuthLoginDto): Promise<User> {
@@ -93,8 +92,7 @@ export class UserService {
       const sendMails = await this.mailerSevice.sendMail({
         to: Email.Email,
         subject: 'Reset Password Link',
-        text: `Click here for reset password-http://localhost:3000/resetpassword/user/ResetPassword?Token=${access_Token}`,
-        //text: `Click here for reset password-https://e-commerce-creole.herokuap`p.com/user/ResetPassword?Token=${access_Token}`,
+        text: `Click here for reset password-http://localhost:3000/resetpassword?Token=${access_Token}`,
       });
 
       if (sendMails) {
