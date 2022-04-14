@@ -139,7 +139,8 @@ export class UserService {
               const successchange = await getdatafromaccesstoken.save();
               delete forgetpasswordto.access_token;
               if (successchange) {
-                return { message: 'Password is succuessfully change' };
+                
+                return {status: true, message: 'Password is succuessfully change' };
               } else {
                 return { message: 'Something went wrong ' };
               }
