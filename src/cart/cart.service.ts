@@ -19,6 +19,9 @@ export class CartService {
   async addToCart(productId: number, quantity: number, user: string): Promise<any> {
         const cartItems = await this.cartRepository.find({ relations: ["item",'user'] });
         const product = await this.productsService.getOne(productId);
+
+        const authUserToken = await this.userRepository.findOne({Access_Token : user});
+         if(!authUserToken === null){
         const authUser = await this.userRepository.findOne({Email : user})
        
         //Confirm the product exists.
@@ -43,7 +46,8 @@ export class CartService {
                 return await this.cartRepository.update(cart[0].id, { quantity, total });
             }
         }
-        return null;
+    }
+    return {message: 'you need to login first'};
     }
 
     async getItemsInCart(user: string): Promise<CartEntity[]> {
