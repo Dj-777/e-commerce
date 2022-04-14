@@ -37,13 +37,16 @@ export class CartService {
                 return await this.cartRepository.save(newItem)
             } else {
                 //Update the item quantity
-                const quantity = (cart[0].quantity += 1);
-                const total = cart[0].total * quantity;
+               
+                const quantity1 = (cart[0].quantity = quantity);
+                const total = cart[0].total * quantity1;
  
-                return await this.cartRepository.update(cart[0].id, { quantity, total });
+                await this.cartRepository.update(cart[0].id, { quantity, total });
+                
             }
         }
-        return null;
+       
+        return this.cartRepository.findOneBy({quantity});
     }
 
     async getItemsInCart(user: string): Promise<CartEntity[]> {
