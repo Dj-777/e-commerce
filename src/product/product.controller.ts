@@ -26,6 +26,18 @@ export class ProductController {
   // async GetAll(): Promise<ProductEntity[]> {
   //   return await this.productsService.getAll();
   // }
+
+  @Post('getProductById')
+  async Getone(@Req() req: Request) {
+    await this.productsService.getproductbyId('ProductEntity');
+
+    if (req.body.id) {
+      return await this.productsService.getOne(req.body.id);
+    }
+    
+
+  }
+
   
   @Post('filterproduct')
     async backend(@Req() req: Request) {

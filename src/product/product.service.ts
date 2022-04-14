@@ -31,4 +31,7 @@ async create(product: ProductEntity): Promise<ProductEntity> {
 
   }
   
+  async getproductbyId(id: string) {
+    return this.productRepository.createQueryBuilder(id);
+  }
 }
