@@ -40,7 +40,7 @@ export class CartService {
             const quantity1 = (cart[0].quantity = quantity);
             const total = cart[0].total * quantity1;
 
-            return await this.cartRepository.update(cart[0].id, { quantity, total });
+        await this.cartRepository.update(cart[0].id, { quantity, total });
         }
     }
     return this.cartRepository.findOne({quantity});
