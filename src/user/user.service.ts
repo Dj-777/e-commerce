@@ -8,7 +8,6 @@ import { JwtService } from '@nestjs/jwt';
 import { AuthLoginDto } from 'src/components/authlogin.dto';
 import { forgetPasswordDto } from 'src/components/Forgetpasswor.dto';
 import { RegisterUserDto } from 'src/components/userregister.dto';
-import { LogInUsers } from 'src/entity/LoginUser.entity';
 import { User } from 'src/entity/user.entity';
 import { getConnection } from 'typeorm';
 import * as bcrypt from 'bcryptjs';

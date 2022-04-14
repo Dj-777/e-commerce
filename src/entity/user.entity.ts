@@ -4,11 +4,16 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
 import { Gender } from 'src/components/userRegister.enum';
+import { CartEntity } from 'src/cart/cart.entity';
+import { OrderEntity } from 'src/order/order.entity';
 @Entity()
 export class User extends BaseEntity {
   @PrimaryGeneratedColumn()
@@ -37,6 +42,15 @@ export class User extends BaseEntity {
 
   @Column({ type: 'enum', enum: Gender })
   Gender: Gender;
+
+  @OneToMany(type => CartEntity, cart => cart.id)
+  @JoinColumn()
+  cart: CartEntity[]
+
+  @OneToOne(type => OrderEntity, order => order.id)
+  @JoinColumn()
+  order : OrderEntity;
+
 
   @Column({ default: null })
   Access_Token: string;

@@ -4,24 +4,26 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { LogInUsers } from './entity/LoginUser.entity';
-import { Product } from './entity/testdb.entity';
 import { User } from './entity/user.entity';
 import { ProductEntity } from './product/product.entity';
 import { ProductModule } from './product/product.module';
 import { UserModule } from './user/user.module';
 import { MailModule } from './mail/mail.module';
-const entities = [ProductEntity, User, LogInUsers];
+import { CartEntity } from './cart/cart.entity';
+import { OrderEntity } from './order/order.entity';
+import { CartModule } from './cart/cart.module';
+import { OrderModule } from './order/order.module';
+const entities = [ProductEntity, User, CartEntity, OrderEntity];
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
     }),
     TypeOrmModule.forRoot({
-      type: 'postgres',
+      type: process.env.DB_TYPE as any,
       host: process.env.DB_HOST,
       port: parseInt(process.env.DB_PORT),
-      username: process.env.DB_USER,
+      username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
       entities: entities,
@@ -31,6 +33,8 @@ const entities = [ProductEntity, User, LogInUsers];
     UserModule,
     ProductModule,
     MailModule,
+    CartModule,
+    OrderModule
   ],
   controllers: [AppController],
   providers: [AppService],
