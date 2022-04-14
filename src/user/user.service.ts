@@ -91,7 +91,7 @@ export class UserService {
       const sendMails = await this.mailerSevice.sendMail({
         to: Email.Email,
         subject: 'Reset Password Link',
-        text: `Click here for reset password-https://e-commerce-creole.herokuapp.com/user/ResetPassword?Token=${access_Token}`,
+        text: `Click here for reset password-http://localhost:3000/resetpassword?Token=${access_Token}`,
       });
 
       if (sendMails) {
