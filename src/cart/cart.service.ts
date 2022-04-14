@@ -25,7 +25,7 @@ export class CartService {
     if (product) {
         //confirm if user has item in cart
         const cart = cartItems.filter(
-            (item) => item.item.id === productId && item.user.Email === user,
+            (item) => item.item.id === productId && item.user?.Email === user,
         );
         if (cart.length < 1) {
 
