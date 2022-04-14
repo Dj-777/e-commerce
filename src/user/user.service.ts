@@ -24,16 +24,16 @@ export class UserService {
       where: { Email: registeruserdto.Email },
     });
     if (checkemail) {
-      return { Message: 'you are already registred with this email' };
+      return { message: 'you are already registred with this email' };
     } else {
       const user = User.create(registeruserdto);
       await User.save(user);
       if (user.save) {
-        return { status: true, Message: 'You have registered successfully' };
+        return { status: true, message: 'You have registered successfully' };
       } else {
         return {
           status: false,
-          Message: 'You have not registered successfully',
+          message: 'You have not registered successfully',
         };
       }
     }
@@ -44,7 +44,8 @@ export class UserService {
   async login(authLoginDto: AuthLoginDto) {
     if (await User.findOne({ where: { Email: authLoginDto.Email } })) {
       const user: User = await this.validateUser(authLoginDto);
-      const payload = `${user.id}`;
+      const date = new Date();
+      const payload = `${(user.id, date.getSeconds())}`;
       const access_Token = this.jwtService.sign(payload);
 
       user.Access_Token = access_Token;
@@ -63,7 +64,7 @@ export class UserService {
       //   .where('Email = :Email', { Email: authLoginDto.Email })
       //   .execute();
     } else {
-      return { Message: 'You have to register first' };
+      return { message: 'You have to register first' };
     }
   }
   async validateUser(authLoginDto: AuthLoginDto): Promise<User> {
@@ -92,70 +93,77 @@ export class UserService {
       const sendMails = await this.mailerSevice.sendMail({
         to: Email.Email,
         subject: 'Reset Password Link',
-        text: `Click here for reset password-https://e-commerce-creole.herokuapp.com/user/ResetPassword?Token=${access_Token}`,
+        text: `Click here for reset password-http://localhost:3000/resetpassword/user/ResetPassword?Token=${access_Token}`,
+        //text: `Click here for reset password-https://e-commerce-creole.herokuap`p.com/user/ResetPassword?Token=${access_Token}`,
       });
 
       if (sendMails) {
         return {
           status: true,
-          Message: 'Email has been sent, please check your inbox.',
+          message: 'Email has been sent, please check your inbox.',
         };
       } else {
         return {
-          Message: 'Something went wrong ',
+          message: 'Something went wrong ',
         };
       }
       //return `You Are Here`;
     } else {
-      return { Message: 'You Need to Register First...' };
+      return { message: 'You Need to Register First...' };
     }
   }
+
   //forgetPassword
   async Forgetpasswordaftergetmail(forgetpasswordto: forgetPasswordDto) {
-    const check_accesstoken: { payload: number; exp: number } =
-      this.jwtService.verify(forgetpasswordto.access_token);
-    console.log(check_accesstoken.exp);
-    if (forgetpasswordto.Password === forgetpasswordto.conformPassword) {
-      const datenow = new Date();
-      if (check_accesstoken.exp < datenow.getTime() / 1000) {
-        return new NotFoundException('Link is expired');
-      } else {
-        if (check_accesstoken.payload) {
-          const getdatafromaccesstoken = await User.findOne({
-            where: { id: check_accesstoken.payload },
-          });
+    try {
+      const check_accesstoken: { payload: number; exp: number } =
+        this.jwtService.verify(forgetpasswordto.access_token);
+      if (check_accesstoken) {
+        if (forgetpasswordto.Password === forgetpasswordto.conformPassword) {
+          const datenow = new Date();
 
-          if (getdatafromaccesstoken) {
-            if (
-              !(await getdatafromaccesstoken?.ValidatePassword(
-                forgetpasswordto.conformPassword,
-              ))
-            ) {
-              forgetpasswordto.conformPassword = await bcrypt.hash(
-                forgetpasswordto.conformPassword,
-                8,
-              );
-              getdatafromaccesstoken.Password =
-                forgetpasswordto.conformPassword;
-              const successchange = await getdatafromaccesstoken.save();
-              delete forgetpasswordto.access_token;
-              if (successchange) {
-                return { Message: 'Password is succuessfully change' };
+          if (check_accesstoken.payload) {
+            const getdatafromaccesstoken = await User.findOne({
+              where: { id: check_accesstoken.payload },
+            });
+
+            if (getdatafromaccesstoken) {
+              if (
+                !(await getdatafromaccesstoken?.ValidatePassword(
+                  forgetpasswordto.conformPassword,
+                ))
+              ) {
+                forgetpasswordto.conformPassword = await bcrypt.hash(
+                  forgetpasswordto.conformPassword,
+                  8,
+                );
+                getdatafromaccesstoken.Password =
+                  forgetpasswordto.conformPassword;
+                const successchange = await getdatafromaccesstoken.save();
+                delete forgetpasswordto.access_token;
+                if (successchange) {
+                  return {
+                    status: true,
+                    message: 'Password is succuessfully change',
+                  };
+                } else {
+                  return { message: 'Something went wrong ' };
+                }
               } else {
-                return { Message: 'Something went wrong ' };
+                return { message: 'You dont use previous password' };
               }
             } else {
-              return { Message: 'You dont use previous password' };
+              return { message: 'Your data is not get' };
             }
           } else {
-            return { Message: 'Your data is not get' };
+            return { message: 'You have to enter correct accesstoken' };
           }
         } else {
-          return { Message: 'You have to enter correct accesstoken' };
+          return { message: 'Password and conform passsword are not same' };
         }
       }
-    } else {
-      return { Message: 'Password and conform passsword are not same' };
+    } catch (er) {
+      return { message: 'Link is expired' };
     }
   }
 
