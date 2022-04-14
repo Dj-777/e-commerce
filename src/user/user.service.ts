@@ -43,7 +43,8 @@ export class UserService {
   async login(authLoginDto: AuthLoginDto) {
     if (await User.findOne({ where: { Email: authLoginDto.Email } })) {
       const user: User = await this.validateUser(authLoginDto);
-      const payload = `${user.id}`;
+      const date = new Date();
+      const payload = `${(user.id, date.getSeconds())}`;
       const access_Token = this.jwtService.sign(payload);
 
       user.Access_Token = access_Token;
@@ -109,53 +110,58 @@ export class UserService {
       return { message: 'You Need to Register First...' };
     }
   }
+
   //forgetPassword
   async Forgetpasswordaftergetmail(forgetpasswordto: forgetPasswordDto) {
-    const check_accesstoken: { payload: number; exp: number } =
-      this.jwtService.verify(forgetpasswordto.access_token);
-    console.log(check_accesstoken.exp);
-    if (forgetpasswordto.Password === forgetpasswordto.conformPassword) {
-      const datenow = new Date();
-      if (check_accesstoken.exp < datenow.getTime() / 1000) {
-        return new NotFoundException('Link is expired');
-      } else {
-        if (check_accesstoken.payload) {
-          const getdatafromaccesstoken = await User.findOne({
-            where: { id: check_accesstoken.payload },
-          });
+    try {
+      const check_accesstoken: { payload: number; exp: number } =
+        this.jwtService.verify(forgetpasswordto.access_token);
+      if (check_accesstoken) {
+        if (forgetpasswordto.Password === forgetpasswordto.conformPassword) {
+          const datenow = new Date();
 
-          if (getdatafromaccesstoken) {
-            if (
-              !(await getdatafromaccesstoken?.ValidatePassword(
-                forgetpasswordto.conformPassword,
-              ))
-            ) {
-              forgetpasswordto.conformPassword = await bcrypt.hash(
-                forgetpasswordto.conformPassword,
-                8,
-              );
-              getdatafromaccesstoken.Password =
-                forgetpasswordto.conformPassword;
-              const successchange = await getdatafromaccesstoken.save();
-              delete forgetpasswordto.access_token;
-              if (successchange) {
-                
-                return {status: true, message: 'Password is succuessfully change' };
+          if (check_accesstoken.payload) {
+            const getdatafromaccesstoken = await User.findOne({
+              where: { id: check_accesstoken.payload },
+            });
+
+            if (getdatafromaccesstoken) {
+              if (
+                !(await getdatafromaccesstoken?.ValidatePassword(
+                  forgetpasswordto.conformPassword,
+                ))
+              ) {
+                forgetpasswordto.conformPassword = await bcrypt.hash(
+                  forgetpasswordto.conformPassword,
+                  8,
+                );
+                getdatafromaccesstoken.Password =
+                  forgetpasswordto.conformPassword;
+                const successchange = await getdatafromaccesstoken.save();
+                delete forgetpasswordto.access_token;
+                if (successchange) {
+                  return {
+                    status: true,
+                    message: 'Password is succuessfully change',
+                  };
+                } else {
+                  return { message: 'Something went wrong ' };
+                }
               } else {
-                return { message: 'Something went wrong ' };
+                return { message: 'You dont use previous password' };
               }
             } else {
-              return { message: 'You dont use previous password' };
+              return { message: 'Your data is not get' };
             }
           } else {
-            return { message: 'Your data is not get' };
+            return { message: 'You have to enter correct accesstoken' };
           }
         } else {
-          return { message: 'You have to enter correct accesstoken' };
+          return { message: 'Password and conform passsword are not same' };
         }
       }
-    } else {
-      return { message: 'Password and conform passsword are not same' };
+    } catch (er) {
+      return { message: 'Link is expired' };
     }
   }
 
