@@ -11,6 +11,6 @@ import { User } from 'src/entity/user.entity';
 @Module({
   imports: [TypeOrmModule.forFeature([CartEntity, ProductEntity,User])],
   controllers: [CartController],
-  providers: [CartService, ProductService],
+  providers: [CartService, ProductService, UserService],
 })
 export class CartModule {}
