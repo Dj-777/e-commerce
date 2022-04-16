@@ -9,12 +9,13 @@ import { CartService } from 'src/cart/cart.service';
 import { ProductService } from 'src/product/product.service';
 import { OrderController } from './order.controller';
 import { User } from 'src/user/entity/user.entity';
+import { UserService } from 'src/user/user.service';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([OrderEntity, ProductEntity, CartEntity, User]),
   ],
   controllers: [OrderController],
-  providers: [OrderService, CartService, ProductService],
+  providers: [OrderService, CartService, ProductService, UserService],
 })
 export class OrderModule {}
