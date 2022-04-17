@@ -41,7 +41,7 @@ export class CartService {
         } else {
             //Update the item quantity
             const quantity1 = (cart[0].quantity = quantity);
-            const total = cart[0].total * quantity1;
+            const total = product.Price * quantity1;
 
         await this.cartRepository.update(cart[0].id, { quantity, total });
         }
