@@ -5,6 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { CartEntity } from './cart.entity';
 import { ProductService } from 'src/product/product.service';
 import { User } from 'src/entity/user.entity';
+import { UserService } from 'src/user/user.service';
 
 @Injectable()
 export class CartService {
@@ -36,7 +37,7 @@ export class CartService {
             //this.cartRepository.save(newItem)
 
             await this.cartRepository.save(newItem)
-                 return this.cartRepository.findOneBy({quantity});
+                 return this.cartRepository.findOne({quantity});
         } else {
             //Update the item quantity
             const quantity1 = (cart[0].quantity = quantity);

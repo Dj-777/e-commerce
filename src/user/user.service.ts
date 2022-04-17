@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { MailerService } from '@nestjs-modules/mailer';
 import {
   Injectable,
@@ -9,11 +10,15 @@ import { AuthLoginDto } from 'src/components/authlogin.dto';
 import { forgetPasswordDto } from 'src/components/Forgetpasswor.dto';
 import { RegisterUserDto } from 'src/components/userregister.dto';
 import { User } from 'src/entity/user.entity';
+import { Repository } from 'typeorm';
 import { getConnection } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
+import { InjectRepository } from '@nestjs/typeorm';
 @Injectable()
 export class UserService {
   constructor(
+    @InjectRepository(User)
+    private userRepository: Repository<User>,
     private readonly jwtService: JwtService,
     private readonly mailerSevice: MailerService,
   ) {}
@@ -73,6 +78,10 @@ export class UserService {
       throw new UnauthorizedException();
     }
     return user;
+  }
+
+  async getOne(Email: string) {
+    return this.userRepository.findOne({ where: { Email: Email } });
   }
 
   //LOGIN
