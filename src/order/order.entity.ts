@@ -17,7 +17,8 @@ export class OrderEntity {
   @PrimaryGeneratedColumn('uuid')
   id: number;
 
-  @OneToMany((type) => ProductEntity, (item) => item.id)
+  @OneToMany((type) => ProductEntity, (cart) => cart.id)
+  @JoinColumn()
   items: ProductEntity[];
 
   @OneToOne((type) => User, (user) => user.Email)

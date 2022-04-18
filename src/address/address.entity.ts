@@ -5,6 +5,7 @@ import {
     CreateDateColumn,
     Entity,
     JoinColumn,
+    ManyToOne,
     OneToMany,
     OneToOne,
     PrimaryGeneratedColumn,
@@ -38,9 +39,9 @@ export class AddressEntity extends BaseEntity {
     city: string;
 
 
-    @OneToOne((type) => User, (user) => user.Email)
-    @JoinColumn()
-    user: User;
+    // @ManyToOne((type) => User, (user) => user.Email)
+    // @JoinColumn()
+    // user: User;
 
     @Column()
     @CreateDateColumn()

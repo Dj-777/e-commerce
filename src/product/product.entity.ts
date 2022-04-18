@@ -2,12 +2,14 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable prettier/prettier */
 import { CartEntity } from 'src/cart/cart.entity';
+import { OrderEntity } from 'src/order/order.entity';
 import {
   BaseEntity,
   Column,
   CreateDateColumn,
   Entity,
   JoinColumn,
+  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -44,4 +46,8 @@ export class ProductEntity extends BaseEntity {
   @OneToMany(type => CartEntity, cart => cart.id)
   @JoinColumn()
   cart: CartEntity[]
+
+  @ManyToOne(type => OrderEntity, order => order.id)
+  @JoinColumn()
+  order: OrderEntity[]
 }

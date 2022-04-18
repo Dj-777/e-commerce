@@ -25,7 +25,7 @@ export class CartService {
         if (product) {
             //confirm if user has item in cart
             const cart = cartItems.filter(
-                (item) => item.item.id === productId && item.user.Email === user,
+                (item) => item.item.id === productId && item.user?.Email === user,
             );
             if (cart.length < 1) {
  
@@ -34,19 +34,20 @@ export class CartService {
                 newItem.item = product;
                 //this.cartRepository.save(newItem)
  
-                return await this.cartRepository.save(newItem)
+              await this.cartRepository.save(newItem)
+                return this.cartRepository.findOneBy({quantity});
             } else {
                 //Update the item quantity
                
                 const quantity1 = (cart[0].quantity = quantity);
-                const total = cart[0].total * quantity1;
- 
+                const total = product.Price  * quantity1;
+              
                 await this.cartRepository.update(cart[0].id, { quantity, total });
                 
+                return this.cartRepository.findOneBy({ quantity});
             }
         }
        
-        return this.cartRepository.findOneBy({quantity});
     }
 
     async getItemsInCart(user: string): Promise<CartEntity[]> {
