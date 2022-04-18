@@ -21,12 +21,12 @@ export class AddressEntity extends BaseEntity {
 
   @Column()
   fullname: string;
- 
+
   @Column()
   phonenumber: string;
 
   @Column()
-  pincode: number;
+  pincode: string;
 
   @Column()
   state: string;

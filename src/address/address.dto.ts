@@ -10,7 +10,7 @@ export class AddressDto {
   @IsNotEmpty()
   @IsPostalCode()
   @MinLength(6)
-  pincode: number;
+  pincode: string;
   @IsNotEmpty()
   state: string;
   @IsNotEmpty()

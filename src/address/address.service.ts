@@ -16,7 +16,7 @@ export class AddressService {
     @InjectRepository(User)
     private userRepository: Repository<User>,
   ) {}
-
+  storestring: {} = {};
   async addAddress(addressdto: AddressDto): Promise<any> {
     // const authUser = await this.userRepository.findOneBy({Email : user})
     // console.log(authUser);
@@ -31,7 +31,59 @@ export class AddressService {
       addressdto.state === '' ||
       addressdto.pincode === null
     ) {
-      return { message: 'Field is required' };
+      let email,
+        fullname,
+        phonenumber,
+        pincode,
+        pincodelength,
+        state,
+        city,
+        housenumber,
+        roadname_area;
+      if (addressdto.Email === '') {
+        email = 'email is required';
+      }
+      if (addressdto.fullname === '') {
+        fullname = 'fullname is required';
+      }
+      if (addressdto.phonenumber === '') {
+        phonenumber = 'phonenumber is required';
+      }
+      if (addressdto.pincode === '') {
+        pincode = 'pincode is required';
+      }
+      if (addressdto.pincode.length < 6) {
+        pincodelength = 'pincode only have 6 digits';
+      }
+      if (addressdto.pincode.length > 6) {
+        pincodelength = 'pincode only have 6 digits';
+      }
+      if (addressdto.state === '') {
+        state = 'state is required';
+      }
+      if (addressdto.city === '') {
+        city = 'city is required';
+      }
+      if (addressdto.housenumber === '') {
+        housenumber = 'housenumber is required';
+        //this.storestring = { email, fullname, phonenumber, pincode, state };
+      }
+      if (addressdto.roadname_area === '') {
+        roadname_area = 'roadname_area is required';
+      }
+      this.storestring = {
+        email,
+        fullname,
+        phonenumber,
+        pincode,
+        pincodelength,
+        state,
+        city,
+        housenumber,
+        roadname_area,
+      };
+      return { Message: this.storestring };
+      //return { message: 'Field is required' };
     } else {
       const address = await this.AddressRepository.find({
         relations: ['user'],
