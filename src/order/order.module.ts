@@ -16,6 +16,6 @@ import { UserService } from 'src/user/user.service';
     TypeOrmModule.forFeature([OrderEntity, ProductEntity, CartEntity, User]),
   ],
   controllers: [OrderController],
-  providers: [OrderService, CartService, ProductService, UserService],
+  providers: [OrderService, CartService, ProductService],
 })
 export class OrderModule {}

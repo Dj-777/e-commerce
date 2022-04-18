@@ -14,14 +14,15 @@ export class CartService {
     private cartRepository: Repository<CartEntity>,
     @InjectRepository(User)
     private userRepository: Repository<User>,
-     private userService: UserService,
+     //private userService: UserService,
     private productsService: ProductService,
   ) {}
 
   async addToCart(productId: number, quantity: number, Email: string): Promise<any> {
     const cartItems = await this.cartRepository.find({ relations: ["item",'user'] });
     const product = await this.productsService.getOne(productId);
-    const authUser = await this.userService.getOne(Email)
+    //const authUser = await this.userService.getOne(Email)
+    const authUser = await this.userRepository.findOne({Email : Email})
    
     //Confirm the product exists.
     if (product) {
