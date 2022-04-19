@@ -40,22 +40,25 @@ export class OrderService {
             newOrder.items = cart
             newOrder.user = authUser;
           await this.orderRepository.save(newOrder);
-         return newOrder.items , newOrder.subTotal
+ 
+       
+         return {cart ,subTotal};
           
  
         } else {
             const existingOrder = userOrder.map(item => item)
-            await this.orderRepository.update(existingOrder[0].id, { subTotal: existingOrder[0].subTotal + cart[0].Price });
-             const orders = await this.orderRepository.find({ relations: ['user'] });
-             const find1 = await orders.find((subtotal) => subtotal.subTotal);
-             const find2 = find1.subTotal;
-             const userCart = await this.cartRepository.find({ relations: ["item",'user'] });
+            await this.orderRepository.update(existingOrder[0].id, { subTotal: subTotal });
+            return {cart ,subTotal};
+            //  const orders = await this.orderRepository.find({ relations: ['user'] });
+            //  const find1 = await orders.find((subtotal) => subtotal.subTotal);
+            //  const find2 = find1.subTotal;
+            //  const userCart = await this.cartRepository.find({ relations: ["item",'user'] });
        //console.log(userCart)
   
     //  const cart = await userCart.filter((item) =>  item.user?.Email === user)
-      const find = await userCart.find((item) =>  item.item)
+      // const find = await userCart.find((item) =>  item.item)
      
-      return {find2};
+      // return {find2};
         }
      
 }

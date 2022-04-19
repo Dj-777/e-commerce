@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -26,6 +27,11 @@ export class UserService {
       return { Message: 'You have registered successfully' };
     }
   }
+
+  async getOne(Email: string) {
+    return this.userRepository.findOne({where: {Email: Email}});
+}
+
   //Register User
 
   //LOGIN
