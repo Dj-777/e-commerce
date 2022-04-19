@@ -13,7 +13,9 @@ import { CartEntity } from './cart/cart.entity';
 import { OrderEntity } from './order/order.entity';
 import { CartModule } from './cart/cart.module';
 import { OrderModule } from './order/order.module';
-const entities = [ProductEntity, User, CartEntity, OrderEntity];
+import { AddressModule } from './address/address.module';
+import { AddressEntity } from './address/address.entity';
+const entities = [ProductEntity, User, CartEntity, OrderEntity, AddressEntity];
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -31,10 +33,11 @@ const entities = [ProductEntity, User, CartEntity, OrderEntity];
       // logging: true,
     }),
     UserModule,
+    AddressModule,
     ProductModule,
     MailModule,
     CartModule,
-    OrderModule
+    OrderModule,
   ],
   controllers: [AppController],
   providers: [AppService],

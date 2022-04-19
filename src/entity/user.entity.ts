@@ -14,6 +14,7 @@ import * as bcrypt from 'bcryptjs';
 import { Gender } from 'src/components/userRegister.enum';
 import { CartEntity } from 'src/cart/cart.entity';
 import { OrderEntity } from 'src/order/order.entity';
+import { AddressEntity } from 'src/address/address.entity';
 @Entity()
 export class User extends BaseEntity {
   @PrimaryGeneratedColumn()
@@ -43,14 +44,17 @@ export class User extends BaseEntity {
   @Column({ type: 'enum', enum: Gender })
   Gender: Gender;
 
-  @OneToMany(type => CartEntity, cart => cart.id)
+  @OneToMany((type) => CartEntity, (cart) => cart.id)
   @JoinColumn()
-  cart: CartEntity[]
+  cart: CartEntity[];
 
-  @OneToOne(type => OrderEntity, order => order.id)
+  @OneToOne((type) => OrderEntity, (order) => order.id)
   @JoinColumn()
-  order : OrderEntity;
+  order: OrderEntity;
 
+  @OneToMany((type) => AddressEntity, (address) => address.id)
+  @JoinColumn()
+  address: AddressEntity;
 
   @Column({ default: null })
   Access_Token: string;

@@ -48,9 +48,12 @@ export class UserService {
   async login(authLoginDto: AuthLoginDto) {
     if (await User.findOne({ where: { Email: authLoginDto.Email } })) {
       const user: User = await this.validateUser(authLoginDto);
-      const date = new Date();
-      const payload = `${(user.id, date.getSeconds())}`;
-      const access_Token = this.jwtService.sign(payload);
+      // const date = new Date(); date.getSeconds()
+      const payload = `${user.id}`;
+      const access_Token = this.jwtService.sign(
+        { payload: user.id },
+        { expiresIn: '1d' },
+      );
 
       user.Access_Token = access_Token;
       await user.save();
