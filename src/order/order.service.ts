@@ -21,9 +21,7 @@ export class OrderService {
 
   async order(user: string): Promise<any> {
     const cartItem = await this.cartRepository.find({ relations: ["item",'user'] });
-    const cart1 = cartItem.filter(
-      (item) => item.item.id && item.user?.Email === user
-  );
+    
         //find user existing orders
         const usersOrder = await this.orderRepository.find({ relations: ['user'] });
         const userOrder = usersOrder.filter(order => order.user?.Email === user);
@@ -41,14 +39,22 @@ export class OrderService {
             newOrder.user = authUser;
           await this.orderRepository.save(newOrder);
  
-       
-         return {cart ,subTotal};
+          const cart1 = cartItem.filter(
+            (item) => item.quantity && item.user?.Email === user
+        );
+         return {cart1 ,subTotal};
           
  
         } else {
             const existingOrder = userOrder.map(item => item)
             await this.orderRepository.update(existingOrder[0].id, { subTotal: subTotal });
-            return {cart ,subTotal};
+            const cart1 = cartItem.filter(
+              (item) => item.user?.Email === user
+          );
+          if(cart1){
+            
+          }
+           return {cart1 ,subTotal};
             //  const orders = await this.orderRepository.find({ relations: ['user'] });
             //  const find1 = await orders.find((subtotal) => subtotal.subTotal);
             //  const find2 = find1.subTotal;

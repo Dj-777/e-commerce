@@ -72,9 +72,20 @@ export class ProductController {
         };
     }
 
-    @Get()
-    async GetAll(): Promise<ProductEntity[]> {
-      return await this.productsService.getAll();
+    // @Get()
+    // async GetAll(): Promise<ProductEntity[]> {
+    //   return await this.productsService.getAll();
    
+    // }
+
+    @Post('getOneWithquantity')
+  async getOneWithquantity(@Req() req: Request) {
+    const builder = await this.productsService.getproductbyId('ProductEntity');
+
+    if (req.body.id && req.body.Email) {
+      return await this.productsService.getOneWithquantity(req.body.id , req.body.Email);
     }
+    
+
+  }
 }

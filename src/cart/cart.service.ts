@@ -21,7 +21,7 @@ export class CartService {
   async addToCart(productId: number, quantity: number, Email: string): Promise<any> {
         const cartItems = await this.cartRepository.find({ relations: ["item",'user'] });
         const product = await this.productsService.getOne(productId);
-        const authUser = await this.userService.getOne(Email)
+        const authUser = await this.userRepository.findOneBy({Email : Email})
        
         //Confirm the product exists.
         if (product) {
@@ -35,19 +35,32 @@ export class CartService {
                 newItem.user = authUser;
                 newItem.item = product;
                 //this.cartRepository.save(newItem)
- 
+                
                  await this.cartRepository.save(newItem)
+                 
+                
+ 
                  return this.cartRepository.findOneBy({total: product.Price * quantity});
+                
             } else {
                 //Update the item quantity
                
+                
+
+                if( quantity === 0 ){
+                    this.cartRepository.delete(cart[0].id);
+                }else{
+
                 const quantity1 = (cart[0].quantity = quantity);
                 const total = product.Price  * quantity1;
               
                 await this.cartRepository.update(cart[0].id, { quantity, total });
+
+                
                 
                 return this.cartRepository.findOneBy({ total});
             }
+        }
         }
        
     }
@@ -61,9 +74,11 @@ export class CartService {
 
             
        
-           const cart = await userCart.filter((item) =>  item.user?.Email === user)
+           const cart = await userCart.findIndex((item) =>  item.user?.Email === user)
+          
             // this.cartRepository.findOneBy({item})
-            return cart;
+           console.log(cart[1].item, cart[0].quantity);
+           return;
             
         }
        
