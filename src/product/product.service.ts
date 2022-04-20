@@ -68,7 +68,9 @@ export class ProductService {
             console.warn(cart)
 
             if (cart.length <= 0) {
-              return { qauntity: 0 }
+             const item = await this.productRepository.findOne({ where: { id: productId } });
+
+              return { item, qauntity: 0 }
 
 
             } else {
