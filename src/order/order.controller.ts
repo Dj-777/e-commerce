@@ -10,16 +10,16 @@ export class OrderController {
    constructor(private orderService: OrderService) { }
 
    //@UseGuards(JwtAuthGuard)
-   @Post()
-   async order(@Body() body,@Request() req): Promise<any> {
-    const { Email } = body;
-       return this.orderService.order(Email)
+   @Get()
+   async order(@Request() req): Promise<any> {
+   
+       return this.orderService.order(req)
    }
 
    //@UseGuards(JwtAuthGuard)
-   @Post('getorder')
-   async getOrders(@Body() body,@Request() req): Promise<OrderEntity[]> {
-    const { Email } = body;
-       return await this.orderService.getOrders(Email)
-   }
+   // @Post('getorder')
+   // async getOrders(@Body() body,@Request() req): Promise<OrderEntity[]> {
+   //  const { Email } = body;
+   //     return await this.orderService.getOrders(Email)
+   // }
 }

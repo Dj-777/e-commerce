@@ -6,6 +6,7 @@ import {
   Get,
   Post,
   Req,
+  UnauthorizedException,
   
   
   
@@ -14,12 +15,13 @@ import { ProductEntity } from './product.entity';
 import { ProductService } from './product.service';
 import {Request} from "express";
 import { AddProdcutsDto } from './Addproducts.dto';
+import { JwtService } from '@nestjs/jwt';
 
 
 
 @Controller('products')
 export class ProductController {
-  constructor(private productsService: ProductService) {}
+  constructor(private productsService: ProductService,private readonly jwtservice: JwtService,) {}
 
   
   // @Get()
@@ -28,7 +30,7 @@ export class ProductController {
   // }
 
   @Post('getProductById')
-  async Getone(@Req() req: Request) {
+  async Getone(@Req() req) {
     await this.productsService.getproductbyId('ProductEntity');
 
     if (req.body.id) {
@@ -40,16 +42,23 @@ export class ProductController {
 
   
   @Post('filterproduct')
-    async backend(@Req() req: Request) {
+    async backend(@Req() req) {
+      let getheader = req.headers.authorization;
+
+      const splitdata = getheader.split(' ');
+      console.log('spilted data', splitdata[1]);
+        
+      try {
+      const check_accesstoken: { payload: number; exp: number } =
+        this.jwtservice.verify(splitdata[1]);
+      console.log(check_accesstoken.payload);
+      if (check_accesstoken) {
+
         const builder = await this.productsService.queryBuilder('ProductEntity');
 
         if (req.body.SearchByName) {
             builder.where("ProductEntity.Product_name ILIKE :SearchByName OR ProductEntity.Category ILIKE :SearchByName", {SearchByName: `%${req.body.SearchByName}%`})
         }
-
-      //   if (req.body.Category) {
-      //     builder.andWhere("products.Category LIKE :Category", {Category: `%${req.body.Category}%`})
-      // }
 
         const sort: any = req.body.sort;
 
@@ -71,16 +80,33 @@ export class ProductController {
             page,
             //last_page: Math.ceil(total / perPage)
         };
+      };
+      }
+      catch (er) {
+        throw new UnauthorizedException('You have to login again');
+      }
     }
 
-    @Get('getallproducts')
-    async GetAll(): Promise<ProductEntity[]> {
-      return await this.productsService.getAll();
-   
+    @Post('getOneWithquantity')
+    async getOneWithquantity(@Body() body,@Req() req) {
+      const {productId} = body;
+      const builder = await this.productsService.getproductbyId('ProductEntity');
+  
+     
+        return await this.productsService.getOneWithquantity(parseInt(productId), req);
+      
+      
+  
     }
 
     @Post('createproducts')
     async Create( @Body() product: ProductEntity): Promise<ProductEntity> {
       return await this.productsService.create(product);
     }
+
+    // @Get()
+    // async GetAll(): Promise<ProductEntity[]> {
+    //   return await this.productsService.getAll();
+   
+    // }
 }

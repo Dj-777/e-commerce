@@ -48,9 +48,9 @@ export class User extends BaseEntity {
   @JoinColumn()
   cart: CartEntity[];
 
-  @OneToOne((type) => OrderEntity, (order) => order.id)
-  @JoinColumn()
-  order: OrderEntity;
+  // @OneToOne((type) => OrderEntity, (order) => order.id)
+  // @JoinColumn()
+  // order: OrderEntity;
 
   @OneToMany((type) => AddressEntity, (address) => address.id)
   @JoinColumn()
