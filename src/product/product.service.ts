@@ -20,16 +20,10 @@ export class ProductService {
 
   async getOneWithquantity(id: number, Email: string) {
     
-  //   const cart = cartItems.filter(
-  //     (item) => item.item.id === item.user.id && item.user?.id === id,
-  // );
-   //const product =  this.productRepository.findOne({where: {id: id}});
+  
 
    const cartItems = await this.cartRepository.find({ relations: ["item",'user'] });
-     //cartItems.find(product[0])
-     //const product = await this.productsService.getOne(id);
-     //const authUser = await this.userService.getOne(id)
-
+   
      const cart = cartItems.filter(
       (item) => item.item.id === id && item.user?.Email === Email 
   );

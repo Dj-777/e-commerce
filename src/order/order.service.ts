@@ -42,7 +42,13 @@ export class OrderService {
           const cart1 = cartItem.filter(
             (item) => item.quantity && item.user?.Email === user
         );
+
+       
+        if(cart1){
+          cart1.map(el => delete el.user)
+        }
          return {cart1 ,subTotal};
+
           
  
         } else {
@@ -51,20 +57,12 @@ export class OrderService {
             const cart1 = cartItem.filter(
               (item) => item.user?.Email === user
           );
+          
           if(cart1){
-            
+            cart1.map(el => delete el.user)
           }
            return {cart1 ,subTotal};
-            //  const orders = await this.orderRepository.find({ relations: ['user'] });
-            //  const find1 = await orders.find((subtotal) => subtotal.subTotal);
-            //  const find2 = find1.subTotal;
-            //  const userCart = await this.cartRepository.find({ relations: ["item",'user'] });
-       //console.log(userCart)
-  
-    //  const cart = await userCart.filter((item) =>  item.user?.Email === user)
-      // const find = await userCart.find((item) =>  item.item)
-     
-      // return {find2};
+          
         }
      
 }

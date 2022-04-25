@@ -21,13 +21,14 @@ export class CartController {
   //@UseGuards(JwtAuthGuard)
   @Post()
   async AddToCart(@Body() body, @Request() req): Promise<void> {
-    const { productId, quantity , Email} = body;
+    const { productId, quantity } = body;
     return await this.cartService.addToCart(
       productId,
       quantity,
-     Email,
+     req,
     );
   }
+
 
   //@UseGuards(JwtAuthGuard)
   @Post('getcart')

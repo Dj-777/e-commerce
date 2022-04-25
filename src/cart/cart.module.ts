@@ -8,10 +8,13 @@ import { Module } from '@nestjs/common';
 import { User } from 'src/user/entity/user.entity';
 import { CartController } from './cart.controller';
 import { UserService } from 'src/user/user.service';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([CartEntity, ProductEntity, User])],
+  imports: [JwtModule.register({
+    secret: 'Secret',
+  }),TypeOrmModule.forFeature([CartEntity, ProductEntity, User])],
   controllers: [CartController],
-  providers: [CartService, ProductService, UserService],
+  providers: [CartService, ProductService],
 })
 export class CartModule {}

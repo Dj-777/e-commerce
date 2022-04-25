@@ -5,9 +5,12 @@ import { ProductController } from './product.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ProductEntity } from './product.entity';
 import { CartEntity } from 'src/cart/cart.entity';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([ProductEntity, CartEntity])],
+  imports: [JwtModule.register({
+    secret: 'Secret',
+  }),TypeOrmModule.forFeature([ProductEntity, CartEntity])],
   providers: [ProductService],
   controllers: [ProductController],
 })

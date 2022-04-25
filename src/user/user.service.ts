@@ -28,8 +28,8 @@ export class UserService {
     }
   }
 
-  async getOne(Email: string) {
-    return this.userRepository.findOne({where: {Email: Email}});
+  async getOne(id: number) {
+    return this.userRepository.findOne({where: {id: id}});
 }
 
   //Register User

@@ -6,6 +6,7 @@ import {
   Get,
   Post,
   Req,
+  UnauthorizedException,
   
   
   
@@ -14,11 +15,12 @@ import { ProductEntity } from './product.entity';
 import { ProductService } from './product.service';
 import {Request} from "express";
 import { PaginateQuery,Paginated, Paginate} from 'nestjs-paginate'
+import { JwtService } from '@nestjs/jwt';
 
 
 @Controller('products')
 export class ProductController {
-  constructor(private productsService: ProductService) {}
+  constructor(private productsService: ProductService, private readonly jwtservice: JwtService) {}
 
   
   @Post('getProductById')
@@ -39,7 +41,18 @@ export class ProductController {
   // }
   
   @Get('backend')
-    async backend(@Req() req: Request) {
+    async backend(@Req() req) {
+      let getheader = req.headers.authorization;
+
+      const splitdata = getheader.split(' ');
+      console.log('spilted data', splitdata[1]);
+        
+      try {
+      const check_accesstoken: { payload: number; exp: number } =
+        this.jwtservice.verify(splitdata[1]);
+      console.log(check_accesstoken.payload);
+      if (check_accesstoken) {
+
         const builder = await this.productsService.queryBuilder('products');
 
         if (req.body.SearchByName) {
@@ -70,6 +83,11 @@ export class ProductController {
             page,
             //last_page: Math.ceil(total / perPage)
         };
+      };
+    }
+        catch (er) {
+          throw new UnauthorizedException('You have to login again');
+        }
     }
 
     // @Get()
